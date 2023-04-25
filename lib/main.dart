@@ -22,7 +22,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sunmi Printer',
+      title: 'シズキタ番号発券アプリ',
       theme: ThemeData(useMaterial3: true),
       home: const Home(),
     );
@@ -83,13 +83,13 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sunmi printer Example'),
+        title: const Text('静岡北高等学校整理番号札発行装置\nmt.zip 3年2組専用'),
       ),
       body: Center(
         child: Column(
           children: [
             FloatingActionButton.extended(
-              label: Text("NEXT: ${counter + 1}"),
+              label: Text("新規受付: ${counter + 1}番の札を発行します"),
               onPressed: () async {
                 //! print image
                 Future<Uint8List> readFileBytes(String path) async {
@@ -106,7 +106,7 @@ class _HomeState extends State<Home> {
                 await SunmiPrinter.initPrinter();
 
                 Uint8List byte = await _getImageFromAsset(
-                    'assets/images/sticker_white.jpeg');
+                    'assets/images/logo1.jpg');
                 await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
 
                 await SunmiPrinter.startTransactionPrint(true);
@@ -131,8 +131,23 @@ class _HomeState extends State<Home> {
                 await SunmiPrinter.resetFontSize();
                 await SunmiPrinter.lineWrap(2);
                 await SunmiPrinter.exitTransactionPrint(true);
+
+                await SunmiPrinter.initPrinter();
+                await SunmiPrinter.startTransactionPrint(true);
+                await SunmiPrinter.setCustomFontSize(30);
+                await SunmiPrinter.printText('注意:この整理券番号札は必ず所定のゴミ箱へお捨て下さい',
+                    style: SunmiStyle(
+                      align: SunmiPrintAlign.CENTER,
+                      bold: true,
+                      fontSize: SunmiFontSize.MD,
+                    ));
+                await SunmiPrinter.resetFontSize();
+                await SunmiPrinter.lineWrap(2);
+
               },
+
             ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -140,7 +155,7 @@ class _HomeState extends State<Home> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: FloatingActionButton.extended(
-                    label: Text("counter --"),
+                    label: Text("受付取り消し"),
                     onPressed: () async {
                       setState(() {
                         counter--;
@@ -152,7 +167,7 @@ class _HomeState extends State<Home> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: FloatingActionButton.extended(
-                    label: Text("counter ++"),
+                    label: Text("送り:現番 ${counter}"),
                     onPressed: () async {
                       setState(() {
                         counter++;
@@ -164,7 +179,7 @@ class _HomeState extends State<Home> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: FloatingActionButton.extended(
-                    label: Text("counter reset"),
+                    label: Text("番号リセット"),
                     onPressed: () async {
                       setState(() {
                         counter = 0;

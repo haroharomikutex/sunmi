@@ -1,6 +1,6 @@
 {
-    "name": "example",
-    "short_name": "example",
+    "name": "シズキタ番号発券アプリ",
+    "short_name": "シズキタ番号発券アプリ",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
